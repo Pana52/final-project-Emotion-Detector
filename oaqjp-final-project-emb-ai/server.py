@@ -1,3 +1,11 @@
+"""
+Flask application for Emotion Detection.
+
+This module provides endpoints for analyzing text emotions using the Watson NLP service.
+The application includes a GET route for processing text input, a main page for user input,
+and error handling for blank or invalid inputs.
+"""
+
 from flask import Flask, request, jsonify, render_template
 from EmotionDetection import emotion_detector
 
@@ -5,7 +13,17 @@ app = Flask(__name__)
 
 @app.route('/emotionDetector', methods=['GET'])
 def emotion_detection():
-    # Retrieve the text to analyze from the GET request query parameter
+    """
+    Endpoint to analyze emotion in a given text.
+
+    Retrieves text from the query parameters, analyzes it using emotion_detector,
+    and returns a JSON response with formatted emotion results or an error message
+    for invalid input.
+
+    Returns:
+        JSON response containing emotion scores and the dominant emotion, or
+        an error message for blank inputs.
+    """
     text_to_analyze = request.args.get("textToAnalyze", "")
 
     # Process the text and detect emotions
@@ -25,12 +43,17 @@ def emotion_detection():
             f"The dominant emotion is {result['dominant_emotion']}."
         )
 
-    # Return the response as JSON
     return jsonify({"response": response_text})
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Serve the main page
+    """
+    Serves the main HTML page.
+
+    Returns:
+        Rendered template of index.html.
+    """
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
