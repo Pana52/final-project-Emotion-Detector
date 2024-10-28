@@ -11,16 +11,19 @@ def emotion_detection():
     # Process the text and detect emotions
     result = emotion_detector(text_to_analyze)
 
-    # Format the output string as specified
-    response_text = (
-        f"For the given statement, the system response is "
-        f"'anger': {result['anger']}, "
-        f"'disgust': {result['disgust']}, "
-        f"'fear': {result['fear']}, "
-        f"'joy': {result['joy']} and "
-        f"'sadness': {result['sadness']}. "
-        f"The dominant emotion is {result['dominant_emotion']}."
-    )
+    # Check if the result indicates an invalid input
+    if result['dominant_emotion'] is None:
+        response_text = "Invalid text! Please try again!"
+    else:
+        response_text = (
+            f"For the given statement, the system response is "
+            f"'anger': {result['anger']}, "
+            f"'disgust': {result['disgust']}, "
+            f"'fear': {result['fear']}, "
+            f"'joy': {result['joy']} and "
+            f"'sadness': {result['sadness']}. "
+            f"The dominant emotion is {result['dominant_emotion']}."
+        )
 
     # Return the response as JSON
     return jsonify({"response": response_text})
